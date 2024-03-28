@@ -6,6 +6,8 @@
   import { get } from "svelte/store";
   import type { ActionData } from "./$types";
   import { onMount } from "svelte";
+  import { blur } from "svelte/transition";
+  import { sineInOut } from "svelte/easing";
 
   export let form: ActionData;
   let returnUrl = $page.url.searchParams.get("return-target");
@@ -47,31 +49,41 @@
   }
 </script>
 
-<div
-  class="w-screen h-screen bg-gray-200 flex items-center content-center justify-center border-solid"
-  style="width: 100vw; height: 100vh"
->
-  <div class="toast toast-center toast-middle w-1/3 max-w-[560px] m-auto">
-    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-      <form class="flex flex-col space-y-6 gap-4" method="POST">
-        <!-- gap dùng để canh khoảng cách giữa 2 element -->
-        <h2 class="text-xl font-medium text-gray-900 dark:text-white p-0">
-          Kurses
-        </h2>
+<div class="w-screen h-screen flex flex-row justify-start items-center pl-4">
+  <form
+    class="card variant-ghost p-8 ml-16 border border-1 rounded h-content w-1/3 min-w-2/5 max-w-[540px]"
+    method="POST"
+    transition:blur={{easing: sineInOut}}
+  >
+    <div class="flex flex-col gap-4">
+      <div>
+        <h1
+          class="h1 leading-normal bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
+        >
+          Kurges
+        </h1>
+        <p class="text-gray-500 italic mb-6">A Bitble's Product</p>
+      </div>
 
-        <label class="label">
-          <span>Username</span>
+
+      <label class="label">
+        <span class="ml-4">Login identity</span>
+        <div class="input-group grid grid-cols-[auto_1fr_auto]">
+          <div><i class="bi bi-person-circle"></i></div>
           <input
             class="input"
             type="text"
             name="loginIdentity"
-            placeholder="Username/Email/Numberphone"
+            placeholder="Username / Email / Numberphone"
             required
           />
-        </label>
+        </div>
+      </label>
 
-        <label class="label space-y-2">
-          <span>Password</span>
+      <label class="label">
+        <span>Password</span>
+        <div class="input-group grid grid-cols-[auto_1fr_auto]">
+          <div><i class="bi bi-key-fill"></i></div>
           <input
             class="input"
             type="text"
@@ -79,16 +91,29 @@
             placeholder="********"
             required
           />
-        </label>
-
-        <div class="flex items-start justify-between space-y-2">
-          <!-- <Checkbox>Ghi nhớ đăng nhập</Checkbox> -->
-          <!-- <A href="/auth/password-reset">Quên mật khẩu?</A> -->
         </div>
+      </label>
+
+      <div class="flex flex-col gap-4" style="margin-top: 2em">
         <button type="submit" class="btn variant-filled space-y-2"
-          >Sign In</button
+          >Log In</button
         >
-      </form>
+        <p class="text-center">
+          <span>Forget Password? </span>
+          <a class="anchor" href="/auth/reset-pass">Proceed to reset</a>
+        </p>
+        <hr class="mt-4"/>
+        <p class="text-center">You don't have your account?</p>
+        <a role="button" href="/auth/signup" class="btn variant-ghost">
+          <span><i class="bi bi-person-fill-add"></i></span>
+          <span>Create new account</span>
+        </a>
+      </div>
     </div>
+    <!-- gap dùng để canh khoảng cách giữa 2 element -->
+  </form>
+
+  <div class="">
+    <div class=""></div>
   </div>
 </div>

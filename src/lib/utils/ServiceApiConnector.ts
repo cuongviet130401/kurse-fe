@@ -1,5 +1,6 @@
-const ORIGIN: string = "https://";
-// const ORIGIN: string = "http://";
+// const ORIGIN: string = "http://kurge-api.bitble.one/kurse/api";
+const ORIGIN: string = "http://localhost:80/kurse/api";
+
 
 export function _makePostRequest(path: string, payload: any): Promise<any> {
 
@@ -12,8 +13,8 @@ export function _makePostRequest(path: string, payload: any): Promise<any> {
     },
     body: JSON.stringify(payload)
     // body: payload
-  }).then(response => { console.log(response); return response.json() })
-    .catch(err => { console.log(err); return err.json() });
+  }).then(response => response)
+    .catch(err => err);
 }
 
 export function _makePutRequest(path: string, payload: any): Promise<any> {
@@ -104,20 +105,44 @@ export async function provokeDelete(path: string, params?: object) {
     headers: {
       'Content-Type': 'application/json'
     },
-  }).then(response => { /*console.log(response);*/ return response.json() })
-    .catch(err => { console.log(err); return err; });
+  }).then(response => {
+     /*console.log(response);*/ return response.json()
+    })
+.catch(err => { console.log(err); return err; });
 }
 
 export async function provokePost(path: string, payload: object) {
-  console.log(payload)
-  return fetch("/server?targetUrl=" + path, {
+
+  const response = await fetch("/server?targetUrl=" + path, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(payload)
-  }).then(response => { console.log(response); return response.json() })
-    .catch(err => { console.log(err); return err; });
+  })
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw responseBody;
+  }
+
+  return responseBody;
+
+  // return fetch("/server?targetUrl=" + path, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(payload)
+  // }).then(async (response) => {
+  //   console.log(response);
+  //   const res = await response.json();
+  //   if (response.status >= 400) {
+  //     throw res;
+  //   }
+  //   return res;
+  // }).catch(err => {console.error(err); throw err;});
 }
 
 export async function provokePut(path: string, payload: object) {
