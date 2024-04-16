@@ -49,11 +49,11 @@
   }
 </script>
 
-<div class="w-screen h-screen flex flex-row justify-start items-center pl-4">
+<div class="w-screen h-screen flex justify-center items-center">
   <form
     class="card variant-ghost p-8 ml-16 border border-1 rounded h-content w-1/3 min-w-2/5 max-w-[540px]"
     method="POST"
-    transition:blur={{easing: sineInOut}}
+    transition:blur={{ easing: sineInOut }}
   >
     <div class="flex flex-col gap-4">
       <div>
@@ -62,9 +62,7 @@
         >
           Kurges
         </h1>
-        <p class="text-gray-500 italic mb-6">A Bitble's Product</p>
       </div>
-
 
       <label class="label">
         <span class="ml-4">Login identity</span>
@@ -102,7 +100,7 @@
           <span>Forget Password? </span>
           <a class="anchor" href="/auth/reset-pass">Proceed to reset</a>
         </p>
-        <hr class="mt-4"/>
+        <hr class="mt-4" />
         <p class="text-center">You don't have your account?</p>
         <a role="button" href="/auth/signup" class="btn variant-ghost">
           <span><i class="bi bi-person-fill-add"></i></span>

@@ -1,13 +1,10 @@
 <script>
-	import "$lib/tailwind.css";
-	import "$lib/style.css";
-	import { Toast, initializeStores } from '@skeletonlabs/skeleton';
+  import "$lib/tailwind.css";
+  import "$lib/style.css";
+  import { Toast, initializeStores } from "@skeletonlabs/skeleton";
 
-	initializeStores();
-
-
+  initializeStores();
 </script>
 
-<slot />
 <Toast />
-
+<slot />

@@ -127,7 +127,7 @@ export async function provokePost(path: string, payload: object) {
     throw responseBody;
   }
 
-  return responseBody;
+  return responseBody;n
 
   // return fetch("/server?targetUrl=" + path, {
   //   method: 'POST',

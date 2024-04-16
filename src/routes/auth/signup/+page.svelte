@@ -48,15 +48,13 @@
   }
 </script>
 
-<div
-  bind:this={wrp}
-  class="w-screen h-screen flex flex-row justify-start items-center pl-4"
->
+<div bind:this={wrp} class="w-screen h-screen flex justify-center items-center">
   <form
     class="card variant-ghost p-8 ml-12 border border-1 rounded h-content w-1/3 min-w-2/5 max-w-[540px]"
     method="POST"
     transition:blur={{ easing: sineInOut }}
   >
+    <!-- Các trường form ở đây -->
     <div class="flex flex-col gap-4">
       <div>
         <h2
@@ -91,15 +89,6 @@
           />
         </label>
       </div>
-
-      <BitbleInput
-        type="email"
-        fieldName="email"
-        bind:value={form_email}
-        icon="bi-envelope-paper-fill"
-        placeholder="Adam.Smith@gmail.com"
-        required={true}
-      />
 
       <!-- <label class="label">
         <span>Email</span>
