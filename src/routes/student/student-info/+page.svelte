@@ -1,5 +1,15 @@
-<script>
+<script lang="ts">
   import BitbleInput from "$lib/components/BitbleInput.svelte";
+  import { writable } from "svelte/store";
+
+  let isDisabled = writable(false);
+
+  let form_email;
+  let form_phoneNumber;
+
+  function toggleDisabled() {
+    isDisabled.update((prev) => !prev);
+  }
 </script>
 
 <div class="w-screen h-screen flex justify-center items-center">
@@ -24,28 +34,41 @@
     </div>
 
     <!-- Div bên phải -->
-    <div class="w-1/2 p-4 flex flex-col space-y-4 gap-4">
+    <class class="w-1/2 p-4 flex flex-col space-y-4 gap-4">
       <div class="flex items-center justify-between">
         <h1 class="text-2xl">Student Name</h1>
-        <button type="button" class="btn-icon variant-ghost">
+
+        <!-- Disable Button -->
+
+        <button
+          type="button"
+          class="btn-icon variant-ghost"
+          on:click={toggleDisabled}
+        >
           <i class="bi bi-pencil"></i>
         </button>
       </div>
+
       <!-- ... Các phần tử khác trong thẻ div ... -->
 
       <!-- First Name -->
-      <div class="flex items-start">
+      <label class="flex items-start">
         <span class="w-1/3">First Name:</span>
-        <input class="w-2/3 input" type="text" placeholder="Input" />
-      </div>
+        <input
+          class="w-2/3 input"
+          type="text"
+          placeholder=""
+          disabled={$isDisabled}
+        />
+      </label>
 
       <!-- Last Name -->
-      <div class="flex items-start">
+      <label class="flex items-start">
         <span class="w-1/3">Last Name:</span>
-        <input class="w-2/3 input" type="text" placeholder="Input" />
-      </div>
+        <input class="w-2/3 input" type="text" placeholder="" />
+      </label>
 
-      <!-- Gender -->
+      <!-- CheckBox Gender -->
       <div class="flex items-center space-x-4">
         <span class="w-1/3">Gender:</span>
         <label class="flex items-center space-x-4">
@@ -59,42 +82,59 @@
       </div>
 
       <!-- Email -->
-      <div class="flex items-start">
+      <div class="flex item_center">
         <BitbleInput
           type="email"
           fieldName="email"
           bind:value={form_email}
-          placeholder="Adam.Smith@gmail.com"
+          placeholder=""
           required={true}
         />
       </div>
 
+      <!-- Phone Number -->
+      <label class="label flex items-start">
+        <span class="w-1/3">Phone number:</span>
+        <div class="w-2/3 input-group grid grid-cols-[auto_2fr_auto]">
+          <input
+            class="input"
+            id="txt_phoneNumber"
+            type="tel"
+            name="phonenumber"
+            placeholder=""
+            bind:value={form_phoneNumber}
+            required
+          />
+        </div>
+        <span class="text-red-400" id="hint_phoneNumber"></span>
+      </label>
+
       <!-- Street Name -->
-      <div class="flex items-start">
+      <label class="flex items-start">
         <span class="w-1/3">Street Name:</span>
-        <input class="w-2/3 input" type="text" placeholder="Input" />
-      </div>
+        <input class="w-2/3 input" type="text" placeholder="" />
+      </label>
 
       <!-- Area Name -->
-      <div class="flex items-start">
+      <label class="flex items-start">
         <span class="w-1/3">Area Name:</span>
-        <input class="w-2/3 input" type="text" placeholder="Input" />
-      </div>
+        <input class="w-2/3 input" type="text" placeholder="" />
+      </label>
 
       <!-- City/District -->
-      <div class="flex items-start">
+      <label class="flex items-start">
         <span class="w-1/3">City/District:</span>
-        <input class="w-2/3 input" type="text" placeholder="Input" />
-      </div>
+        <input class="w-2/3 input" type="text" placeholder="" />
+      </label>
 
       <!-- Country -->
-      <div class="flex items-start">
+      <label class="flex items-start">
         <span class="w-1/3">Country:</span>
-        <input class="w-2/3 input" type="text" placeholder="Input" />
-      </div>
+        <input class="w-2/3 input" type="text" placeholder="" />
+      </label>
 
       <!-- Submit Button -->
-      <button type="submit" class="btn variant-filled">Submit</button>
-    </div>
+      <button type="submit" class="btn variant-filled">Done</button>
+    </class>
   </div>
 </div>
