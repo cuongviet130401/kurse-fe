@@ -23,7 +23,7 @@
   <section class="book-bottom-links">
     <section class="from-pariyatti available-at">
       <header>
-        <h5>From Pariyatti</h5>
+        <h5>Prize</h5>
       </header>
     </section>
   </section>

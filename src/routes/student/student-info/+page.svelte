@@ -4,8 +4,8 @@
 
   let isEditing = false;
 
-  let form_email;
-  let form_phoneNumber;
+  let form_email = "";
+  let form_phoneNumber = "";
 
   let bills = [
     { id: 1, description: "1", amount: 1 },
@@ -14,8 +14,6 @@
   ];
 
   function toggleDisabled() {
-    console.log("heh");
-
     isEditing = !isEditing;
     updateDisabledState(isEditing);
   }
@@ -128,17 +126,13 @@
       <!-- First Name -->
       <label class="flex items-start">
         <span class="w-1/3">First Name:</span>
-        <input
-          class="w-2/3 input disableable"
-          type="firstname"
-          placeholder=""
-        />
+        <input class="w-2/3 input disableable" type="text" placeholder="" />
       </label>
 
       <!-- Last Name -->
       <label class="flex items-start">
         <span class="w-1/3">Last Name:</span>
-        <input class="w-2/3 input disableable" type="lastname" placeholder="" />
+        <input class="w-2/3 input disableable" type="text" placeholder="" />
       </label>
 
       <!-- CheckBox Gender -->
@@ -189,13 +183,13 @@
       <!-- Street Name -->
       <label class="flex items-start">
         <span class="w-1/3">Street Name:</span>
-        <input class="w-2/3 input disableable" type="street" placeholder="" />
+        <input class="w-2/3 input disableable" type="text" placeholder="" />
       </label>
 
       <!-- Area Name -->
       <label class="flex items-start">
         <span class="w-1/3">Area Name:</span>
-        <input class="w-2/3 input disableable" type="area" placeholder="" />
+        <input class="w-2/3 input disableable" type="text" placeholder="" />
       </label>
 
       <!-- City/District -->
@@ -211,8 +205,11 @@
       </label>
 
       <!-- Submit Button -->
-      <button type="submit" class="btn variant-filled" class:hidden={!isEditing}
-        >Done</button
+      <button
+        type="submit"
+        class="btn variant-filled"
+        class:hidden={isEditing}
+        on:click={toggleDisabled}>Done</button
       >
     </div>
   </div>
