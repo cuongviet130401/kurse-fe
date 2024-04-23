@@ -19,10 +19,7 @@
     <!-- Explore -->
     <div class="relative lg:block">
       <!-- trigger -->
-      <button
-        class="btn hover:variant-soft-primary"
-        use:popup={{ event: "click", target: "features" }}
-      >
+      <button class="btn hover:variant-soft-primary">
         <span>content1</span>
         <i class="fa-solid fa-caret-down opacity-50" />
       </button>

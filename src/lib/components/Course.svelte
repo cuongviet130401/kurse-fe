@@ -3,19 +3,19 @@
   import { expoInOut } from "svelte/easing";
   export let title;
   export let image;
-  //export let language;
-  export let courseBundle;
-  //export let pdfLink;
-  //export let appleLink;
-  //export let googleLink;
-  //export let amazonLink;
+  export let language;
+  export let ebookBundle;
+  export let pdfLink;
+  export let appleLink;
+  export let googleLink;
+  export let amazonLink;
 </script>
 
 <section class="book" transition:scale={{ duration: 1000, easing: expoInOut }}>
   <section class="book-top-info">
     <figure class="bkcont">
       <img src={image} alt={title} class="bkcover" />
-      <!--<div class="language">({language})</div>-->
+      <div class="language">({language})</div>
       <figcaption>{title}</figcaption>
     </figure>
   </section>
@@ -23,30 +23,82 @@
   <section class="book-bottom-links">
     <section class="from-pariyatti available-at">
       <header>
-        <h5>Content</h5>
+        <h5>From Pariyatti</h5>
       </header>
-      <div class="buy-options-cont">
-        <a href={courseBundle}
-          ><button class="p-book-btn multi-btn">Button</button></a
-        >
-      </div>
-      <div class="buy-options-cont">
-        <!--<a href={pdfLink}><button class="p-book-btn pdf-btn">Free PDF Download</button></a>-->
-      </div>
-    </section>
-    <section class="other-vendors available-at">
-      <header>
-        <h5>Content</h5>
-      </header>
-      <!--<div class="buy-options-cont">
-				<a href={appleLink}><img class="itunes vender-logo" src="https://store.pariyatti.org/assets/images/IBooks_logo.png" alt="itunes logo" /></a>
-			</div>
-			<div class="buy-options-cont">
-				<a href={googleLink}><img class="googleplay vender-logo" src="https://store.pariyatti.org/assets/images/google_play_logo.png" alt="google logo" /></a>
-			</div>
-			<div class="buy-options-cont">
-				<a href={amazonLink}><img class="amazon vender-logo" src="https://store.pariyatti.org/assets/images/Amazon_Kindle_logo.png" alt="amazon logo" /></a>
-			</div>-->
     </section>
   </section>
 </section>
+
+<style>
+  .book {
+    width: 280px;
+    box-shadow: 1px 1px 0 black;
+    margin: 5px;
+    background-color: #e4ddcf;
+  }
+
+  .book-top-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: 3px solid #ffffff;
+  }
+
+  /* Book Layout */
+  .bkcont {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bkcover {
+    width: 100px;
+    height: 150px;
+    margin-bottom: 5px;
+    box-shadow: 0 0 3px gray;
+  }
+
+  div.language {
+    font-size: 0.8em;
+    margin: 5px 0;
+  }
+
+  figcaption {
+    text-align: center;
+    width: 90%;
+    padding: 3px 10px;
+    height: 36px;
+    font-weight: bold;
+  }
+
+  /* Book Links Layout */
+
+  .book-bottom-links {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .available-at {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*   background-color: #fff; */
+  }
+
+  .available-at header {
+    text-align: center;
+  }
+  .available-at header h5 {
+    font-size: 0.95rem;
+    margin: 15px 0;
+    padding: 0 0.2rem;
+  }
+
+  .from-pariyatti {
+    height: 200px;
+  }
+</style>
