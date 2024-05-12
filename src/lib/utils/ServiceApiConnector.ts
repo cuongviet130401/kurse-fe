@@ -127,7 +127,7 @@ export async function provokePost(path: string, payload: object) {
     throw responseBody;
   }
 
-  return responseBody;n
+  return responseBody;
 
   // return fetch("/server?targetUrl=" + path, {
   //   method: 'POST',
@@ -157,7 +157,6 @@ export async function provokePut(path: string, payload: object) {
     .catch(err => { console.log(err); return err; });
 }
 
-
 export async function _login(payload: object) {
   let responseJson = await _makePostRequest("users/login", payload);
   return responseJson;
@@ -180,3 +179,4 @@ export async function _retrieveBikeInformation(id: number) {
   const t = await provokeGet(`motorbikes/${id}`);
   return t;
 }
+ 

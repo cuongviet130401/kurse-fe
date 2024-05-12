@@ -1,6 +1,7 @@
 <script lang="ts">
   import BitbleInput from "$lib/components/BitbleInput.svelte";
   import { onMount } from "svelte";
+  import { writable } from "svelte/store";
 
   let isEditing = false;
 
@@ -12,6 +13,10 @@
     { id: 2, description: "2", amount: 1 },
     { id: 3, description: "3", amount: 1 },
   ];
+
+  //TestLoading
+  export let data;
+  console.log(data);
 
   function toggleDisabled() {
     isEditing = !isEditing;
@@ -27,7 +32,25 @@
 
   onMount(() => {
     updateDisabledState(false);
+    //fetchUsers();
   });
+
+  // Khai báo một store để lưu trữ dữ liệu người dùng từ API
+  // const users = writable([]);
+
+  // async function fetchUsers() {
+  //   try {
+  //     const response = await fetch("http://example.com/api/users");
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const data = await response.json();
+  //     // Cập nhật giá trị của store với dữ liệu người dùng từ API
+  //     users.set(data);
+  //   } catch (error) {
+  //     console.error("There was a problem fetching the users:", error);
+  //   }
+  // }
 
   function downloadBill() {
     // Data for example
@@ -108,6 +131,18 @@
     <div
       class="card variant-ghost w-1/2 p-4 flex flex-col space-y-4 gap-4 rounded-xl border"
     >
+      <!-- {#if users.length > 0}
+       
+        <ul>
+          {#each users as user}
+            <li>{user.name}</li>
+          {/each}
+        </ul>
+      {:else}
+       
+        <p>No users available.</p>
+      {/if} -->
+
       <div class="flex items-center justify-between">
         <h1 class="text-2xl">Student Name</h1>
 

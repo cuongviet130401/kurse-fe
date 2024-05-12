@@ -8,7 +8,7 @@
       <!-- Logo -->
       <a
         class="lg:!ml-0 w-[32px] lg:w-auto overflow-hidden"
-        href="/"
+        href="/home"
         title="Go to Homepage"
       >
         (logo)

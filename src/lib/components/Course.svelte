@@ -4,11 +4,6 @@
   export let title;
   export let image;
   export let language;
-  export let ebookBundle;
-  export let pdfLink;
-  export let appleLink;
-  export let googleLink;
-  export let amazonLink;
 </script>
 
 <section class="book" transition:scale={{ duration: 1000, easing: expoInOut }}>
