@@ -4,25 +4,31 @@
   export let title;
   export let image;
   export let language;
+  export let url; // URL to navigate to
 </script>
 
-<section class="book" transition:scale={{ duration: 1000, easing: expoInOut }}>
-  <section class="book-top-info">
-    <figure class="bkcont">
-      <img src={image} alt={title} class="bkcover" />
-      <div class="language">({language})</div>
-      <figcaption>{title}</figcaption>
-    </figure>
-  </section>
+<a href={url} class="book">
+  <section
+    class="book"
+    transition:scale={{ duration: 1000, easing: expoInOut }}
+  >
+    <section class="book-top-info">
+      <figure class="bkcont">
+        <img src={image} alt={title} class="bkcover" />
+        <div class="language">({language})</div>
+        <figcaption>{title}</figcaption>
+      </figure>
+    </section>
 
-  <section class="book-bottom-links">
-    <section class="from-pariyatti available-at">
-      <header>
-        <h5>Prize</h5>
-      </header>
+    <section class="book-bottom-links">
+      <section class="from-pariyatti available-at">
+        <header>
+          <h5>Prize</h5>
+        </header>
+      </section>
     </section>
   </section>
-</section>
+</a>
 
 <style>
   .book {

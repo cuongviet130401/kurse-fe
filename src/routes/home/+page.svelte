@@ -34,7 +34,7 @@
       </p>
     </div>
     <div class="small-div">
-      <Course />
+      <Course url="/student/course-detail" />
       <div class="carousel-container">
         <CourseCarousel {courses} />
       </div>

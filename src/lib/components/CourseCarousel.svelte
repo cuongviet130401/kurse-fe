@@ -74,5 +74,4 @@
 </div>
 
 <style>
-  /* Your carousel styles */
 </style>

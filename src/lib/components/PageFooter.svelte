@@ -1,6 +1,6 @@
 <script lang="ts">
-  // @ts-expect-error reading from vite.config.js
-  // eslint-disable-next-line no-undef
+  //@ts-expect-error reading from vite.config.js
+  //eslint-disable-next-line no-undef
 
   // Logo
 
