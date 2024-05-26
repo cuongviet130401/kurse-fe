@@ -2,7 +2,7 @@
   import Course from "../../lib/components/Course.svelte";
   import CourseCarousel from "../../lib/components/CourseCarousel.svelte";
   // Sample data for carousel
-  import Carousel from "../../lib/components/Carousel.svelte";
+  import Carousel from "$lib/components/Carousel.svelte";
 
   const carouselItems = [
     { id: 1, image: "/src/lib/images/home1.jpeg", caption: "Caption 1" },

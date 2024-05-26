@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import ActionButton from "$lib/components/ActionButton.svelte";
   import { provokePost } from "$lib/utils/ServiceApiConnector";
   import { getToastStore } from "@skeletonlabs/skeleton";
@@ -8,14 +8,14 @@
 
   const toastStore = getToastStore();
 
-  let form_firstName;
-  let form_lastName;
-  let form_email;
-  let form_phoneNumber;
-  let form_password;
-  let form_confirmPassword;
+  let form_firstName: string;
+  let form_lastName: string;
+  let form_email: string;
+  let form_phoneNumber: string;
+  let form_password: string;
+  let form_confirmPassword: string;
 
-  let wrp;
+  let wrp: any;
 
   async function handleCreateAccount() {
     const preparedPayload = {
@@ -29,12 +29,12 @@
     return await provokePost("/v1/accounts/signup", preparedPayload);
   }
 
-  function handleError(err) {
+  function handleError(err: any) {
     if (err.httpStatus === 400) {
-      wrp.querySelectorAll("[id^='hint_'").forEach((e) => (e.innerText = ""));
+      wrp.querySelectorAll("[id^='hint_'").forEach((e: HTMLElement) => (e.innerText = ""));
       wrp
         .querySelectorAll("[id^='txt_'")
-        .forEach((e) => e.classList.remove("input-error"));
+        .forEach((e: HTMLElement) => e.classList.remove("input-error"));
 
       Object.keys(err.description).forEach((fieldName) => {
         wrp.querySelector("#txt_" + fieldName).classList.add("input-error");

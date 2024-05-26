@@ -33,7 +33,6 @@ export const GET: RequestHandler = async ({url}) => {
 	}
 
 	return new Response( JSON.stringify(t) );
-
 };
 
 export const DELETE: RequestHandler = async ({url}) => {

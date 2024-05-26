@@ -1,5 +1,5 @@
-// const ORIGIN: string = "http://kurge-api.bitble.one/kurse/api";
-const ORIGIN: string = "http://localhost:80/kurse/api";
+const ORIGIN: string = "http://kurge-api.bitble.one/kurse/api";
+// const ORIGIN: string = "http://localhost:80/kurse/api";
 
 
 export function _makePostRequest(path: string, payload: any): Promise<any> {
