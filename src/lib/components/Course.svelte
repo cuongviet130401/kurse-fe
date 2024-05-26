@@ -1,63 +1,58 @@
 <script>
   import { scale } from "svelte/transition";
   import { expoInOut } from "svelte/easing";
+  import Rating from "$lib/components/Rating.svelte"
+
   export let title;
   export let image;
   export let language;
-  export let url; // URL to navigate to
+  export let price;
+  export let description;
+  //export let url; // URL to navigate to
 </script>
 
-<a href={url} class="book">
+<div  class="book">
   <section
     class="book"
     transition:scale={{ duration: 1000, easing: expoInOut }}
   >
-    <section class="book-top-info">
-      <figure class="bkcont">
-        <img src={image} alt={title} class="bkcover" />
-        <div class="language">({language})</div>
-        <figcaption>{title}</figcaption>
-      </figure>
+    <section class="book-top">
+        <img src={image} class="bkcont" />
+        <h5>{title}</h5>
     </section>
 
-    <section class="book-bottom-links">
+    <section class="book-bottom">
       <section class="from-pariyatti available-at">
+        <Rating></Rating>
         <header>
-          <h5>Prize</h5>
+          <h5>{price}</h5>
         </header>
       </section>
     </section>
   </section>
-</a>
+</div>
 
 <style>
   .book {
     width: 280px;
-    box-shadow: 1px 1px 0 black;
-    margin: 5px;
-    background-color: #e4ddcf;
+    margin: 15px;
+    ;
   }
 
-  .book-top-info {
+  .book-top {
     width: 100%;
-    display: flex;
+    display: block;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    border-bottom: 3px solid #ffffff;
   }
 
-  /* Book Layout */
+  /* Book Top Layout */
   .bkcont {
-    width: 100%;
-    text-align: center;
-  }
-
-  .bkcover {
-    width: 100px;
-    height: 150px;
-    margin-bottom: 5px;
-    box-shadow: 0 0 3px gray;
+    width: 400px; /* Chiều rộng cố định cho ảnh */
+    height: 180px; /* Chiều cao cố định cho ảnh */
+    object-fit: cover; /* Điều chỉnh ảnh để lấp đầy khung mà không bị méo */
+    margin-bottom:15px;
   }
 
   div.language {
@@ -71,15 +66,16 @@
     padding: 3px 10px;
     height: 36px;
     font-weight: bold;
+    
   }
 
-  /* Book Links Layout */
+  /* Book Bot Layout */
 
-  .book-bottom-links {
+  .book-bottom {
     width: 100%;
     display: flex;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: left;
   }
 
   .available-at {
@@ -91,7 +87,7 @@
   }
 
   .available-at header {
-    text-align: center;
+    text-align: left;
   }
   .available-at header h5 {
     font-size: 0.95rem;
@@ -102,4 +98,6 @@
   .from-pariyatti {
     height: 200px;
   }
+
+  
 </style>

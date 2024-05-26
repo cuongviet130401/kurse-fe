@@ -61,29 +61,23 @@
   {#if searchTerm && filteredBooks.length === 0}
     <NoResults />
   {:else if filteredBooks.length > 0}
-    {#each filteredBooks as { title, image, language, ebookBundle, pdfLink, appleLink, googleLink, amazonLink }}
+    {#each filteredBooks as { title, image, language, description, price }}
       <Course
         {title}
         {image}
         {language}
-        {ebookBundle}
-        {pdfLink}
-        {appleLink}
-        {googleLink}
-        {amazonLink}
+        {description}
+        {price}
       />
     {/each}
   {:else}
-    {#each bookData as { title, image, language, ebookBundle, pdfLink, appleLink, googleLink, amazonLink }}
+    {#each bookData as { title, image, language, description, price}}
       <Course
         {title}
         {image}
         {language}
-        {ebookBundle}
-        {pdfLink}
-        {appleLink}
-        {googleLink}
-        {amazonLink}
+        {description}
+        {price}
       />
     {/each}
   {/if}

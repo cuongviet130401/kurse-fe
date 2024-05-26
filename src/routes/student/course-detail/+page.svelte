@@ -1,12 +1,8 @@
-<script lang="ts">
-  import { Ratings } from "@skeletonlabs/skeleton";
+<script >
+  
+  import Rating from "$lib/components/Rating.svelte"
 
-  let value = {
-    current: 0,
-    max: 5,
-  };
-
-  export let params;
+  
   let course = {
     title: "Thành Thạo Xử Lý Dữ Liệu Với Python 2024",
     description:
@@ -39,9 +35,6 @@
     ],
   };
 
-  function iconClick(event: CustomEvent<{ index: number }>): void {
-    value.current = event.detail.index;
-  }
 </script>
 
 <div class="course-page">
@@ -51,23 +44,7 @@
         <h1 class="text-4xl font-bold">{course.title}</h1>
         <p class="text-gray-500 mt-2">{course.description}</p>
 
-        <Ratings
-          class="ratings-container mt-4"
-          bind:value={value.current}
-          max={value.max}
-          interactive
-          on:icon={iconClick}
-        >
-          <svelte:fragment slot="empty"
-            ><i class="bi bi-star"></i></svelte:fragment
-          >
-          <svelte:fragment slot="half"
-            ><i class="bi bi-star-half"></i></svelte:fragment
-          >
-          <svelte:fragment slot="full"
-            ><i class="bi bi-star-fill"></i></svelte:fragment
-          >
-        </Ratings>
+        <Rating></Rating>
 
         <div class="flex items-center mt-4">
           <span class="text-yellow-500 text-lg font-bold">{course.rating}</span>
@@ -114,10 +91,10 @@
         <div class="p-6 shadow-lg rounded-lg">
           <h3 class="text-2xl font-bold mb-4">₫{course.price}</h3>
           <button class="bg-blue-600 text-white py-2 px-4 rounded-lg w-full"
-            >Thêm vào giỏ hàng</button
+            >Add to Cart</button
           >
           <button class="bg-white text-black py-2 px-4 rounded-lg w-full mt-2"
-            >Mua ngay</button
+            >Buy Now</button
           >
           <ul class="list-disc pl-6 text-white mt-4">
             {#each course.features as feature}
@@ -139,9 +116,5 @@
     color: #ffffff;
     padding: 20px;
   }
-  .ratings-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Align to the left */
-  }
+  
 </style>
