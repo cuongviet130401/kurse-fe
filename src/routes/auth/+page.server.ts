@@ -1,5 +1,5 @@
 import { authenticatedUser } from '$lib/configs/auth';
-import { _login } from '$lib/utils/ServiceApiConnector';
+import { _login } from '../../lib/utils/ServiceApiConnector';
 import { get } from 'svelte/store';
 import type { Actions } from './$types';
 

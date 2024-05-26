@@ -1,13 +1,15 @@
 <script>
   import { ProgressRadial } from "@skeletonlabs/skeleton";
-	import { scale, slide, fly, fade } from 'svelte/transition';
-	import { cubicInOut, quadInOut, sineInOut } from 'svelte/easing';
+  import { quadInOut } from 'svelte/easing';
+  import { slide } from 'svelte/transition';
 
   export let icon;
   export let label;
   export let successIcon = "bi-check-circle-fill";
   export let disabled = false;
   export let styleClasses = "variant-filled";
+  export let submitBtn = false;
+
   export let onClick = async () => {};
   export let onSuccess = (result) => {
     console.log(result);
@@ -16,7 +18,6 @@
   export let onError = (err) => {
     console.error(err);
   };
-  export let submitBtn = false;
 
   let isLoading = false;
   let isSuccess = false;

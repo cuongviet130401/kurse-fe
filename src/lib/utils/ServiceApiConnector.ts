@@ -1,82 +1,3 @@
-const ORIGIN: string = "http://kurge-api.bitble.one/kurse/api";
-// const ORIGIN: string = "http://localhost:80/kurse/api";
-
-
-export function _makePostRequest(path: string, payload: any): Promise<any> {
-
-  console.log(`[DEBUG: api/post/payload]:`);
-  console.log(payload);
-  return fetch(ORIGIN + path, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-    // body: payload
-  }).then(response => response)
-    .catch(err => err);
-}
-
-export function _makePutRequest(path: string, payload: any): Promise<any> {
-
-  console.log(`[DEBUG: api/post/payload]:`);
-  console.log(payload);
-  return fetch(ORIGIN + path, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-    // body: payload
-  }).then(response => { console.log(response); return response.json() })
-    .catch(err => { console.log(err); return err.json() });
-}
-
-
-export async function _makeGetRequest(path: string, params?: object): Promise<any> {
-
-  let paramsSuffix: string = "?";
-  if (!!params) {
-    let paramsSuffix: string = "?";
-    for (const key in params) {
-      paramsSuffix += key + "=" + params[key] + "&";
-    }
-  }
-
-  paramsSuffix = paramsSuffix.slice(0, -1);
-  console.log(`[DEBUG: api]: GET ${path}${paramsSuffix}`);
-
-  return fetch(ORIGIN + path + paramsSuffix, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  }).then(response => { /*console.log(response);*/ return response.json() })
-    .catch(err => { console.log(err); return err; });
-}
-
-export async function _makeDeleteRequest(path: string, params?: object): Promise<any> {
-
-  let paramsSuffix: string = "?";
-  if (!!params) {
-    let paramsSuffix: string = "?";
-    for (const key in params) {
-      paramsSuffix += key + "=" + params[key] + "&";
-    }
-  }
-
-  paramsSuffix = paramsSuffix.slice(0, -1);
-  console.log(`[DEBUG: api]: DELETE ${path}${paramsSuffix}`);
-
-  return fetch(ORIGIN + path + paramsSuffix, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  }).then(response => { /*console.log(response);*/ return response.json() })
-    .catch(err => { console.log(err); return err; });
-}
-
 export async function provokeGet(path: string, params?: object) {
 
   let paramsSuffix: string = "";
@@ -179,4 +100,4 @@ export async function _retrieveBikeInformation(id: number) {
   const t = await provokeGet(`motorbikes/${id}`);
   return t;
 }
- 
+

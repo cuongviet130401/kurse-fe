@@ -1,3 +1,4 @@
+import type { ToastSettings } from "@skeletonlabs/skeleton";
 import { get, writable } from "svelte/store";
 
 export function getFieldValue(thisPointer: any, id: string) {
@@ -47,3 +48,44 @@ export function clearErrors() {
 export function hasError() {
   return Object.keys(get($_errors)).length > 0;
 }
+
+/**
+ *
+ * @param obj
+ * @returns
+ */
+export function preparePayload(obj: object) {
+  let payload: any = {}
+
+  Object.entries(obj).forEach((entry, index) => {
+    const fieldName = entry[0].replace("form_", "");
+    payload[fieldName] = entry[1];
+  })
+
+  return payload;
+}
+
+export function triggerSuccessToast(toastStore: any, message: string, timeout: number = 5000) {
+  toastStore.trigger({
+    message,
+    timeout,
+    background: 'variant-ghost-success'
+  });
+}
+
+export function triggerInfoToast(toastStore: any, message: string, timeout: number = 5000) {
+  toastStore.trigger({
+    message,
+    timeout,
+    background: 'variant-ghost-primary'
+  });
+}
+
+export function triggerErrorToast(toastStore: any, message: string, timeout: number = 5000) {
+  toastStore.trigger({
+    message: `<p><i class="mr-2 bi bi-x-circle-fill text-red-400 text-xl"></i>${message}</p>`,
+    timeout,
+    background: 'variant-ghost-error'
+  });
+}
+
