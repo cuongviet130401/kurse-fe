@@ -1,10 +1,10 @@
 <script>
-  import StudentAppBar from "$lib/components/StudentAppBar.svelte";
+	import BitbleAppBar from '../lib/components/BitbleAppBar.svelte';
   import imgUrl from "$lib/images/1.png";
 
 </script>
 
-<StudentAppBar/>
+<BitbleAppBar/>
 
 <section id="hero" class="flex flex-row justify-center items-center p-8 m-8 h-screen" >
   <!-- TODO: animate the text and images -->

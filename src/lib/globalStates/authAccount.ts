@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { writable } from "svelte/store";
 
 function createAuthStore() {
@@ -7,14 +8,16 @@ function createAuthStore() {
 	return {
 		save: (authenticationResult: any) => {
 			set(authenticationResult);
-			localStorage.setItem('authInfo', JSON.stringify(authenticationResult));
+			if (browser) {
+				localStorage?.setItem('authInfo', JSON.stringify(authenticationResult));
+			}
 		},
 
 		get: () => {
 			let authInfo;
 			subscribe(v => authInfo = v);
-			if (!authInfo && localStorage.authInfo) {
-				const parsedData = JSON.parse(localStorage.authInfo)
+			if (!authInfo && browser && localStorage?.authInfo) {
+				const parsedData = JSON.parse(localStorage?.authInfo)
 				set(parsedData)
 				return parsedData;
 			}
@@ -23,7 +26,9 @@ function createAuthStore() {
 
 		reset: () => {
 			set(undefined)
-			localStorage.removeItem("authInfo");
+			if (browser) {
+				localStorage.removeItem("authInfo");
+			}
 		}
 	}
 

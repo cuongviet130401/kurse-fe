@@ -1,5 +1,5 @@
 
-<div class="w-full p-8 gap-8 flex flex-row justify-around items-end bg-gradient-to-r from-cyan-500 to-blue-500 ">
+<div class="b-0 w-full p-8 gap-8 flex flex-row justify-around items-end bg-gradient-to-r from-cyan-500 to-blue-500 ">
   <div class="flex flex-col gap-2">
     <h1 class="h1">
       <span class="text-white">

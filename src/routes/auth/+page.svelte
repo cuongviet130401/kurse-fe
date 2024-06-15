@@ -36,12 +36,10 @@
     if (!authStore.get()) {
       return;
     }
-    goto(returnUrl ?? `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`);
+    window.location.pathname = returnUrl ?? `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`;
   }
 
   onMount(() => {
-    // authStore.reset();
-    // console.log(authStore.get());
     redirect();
   })
 </script>

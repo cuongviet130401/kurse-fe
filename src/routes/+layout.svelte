@@ -15,6 +15,7 @@
 
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
   initializeStores();
+
 </script>
 
 <Toast
@@ -28,6 +29,6 @@
   transitionOutParams={{ duration: 200, axis: 'x' }}
 />
 
-<slot />
+<slot style="max-w-screen overflow-hidden" />
 
 <GlobalFooter />

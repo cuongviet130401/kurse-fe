@@ -1,6 +1,11 @@
 import type { ToastSettings } from "@skeletonlabs/skeleton";
 import { get, writable } from "svelte/store";
 
+export async function mockFetching(result: any) {
+	await new Promise(resolve => setTimeout(resolve, 3000));
+	return result;
+}
+
 export function getFieldValue(thisPointer: any, id: string) {
   return thisPointer?.querySelector(`#${id}`)?.value;
 }

@@ -1,0 +1,29 @@
+@font-face {
+	font-family: "TeX Gyre Schola";
+	src: url('/static/fonts/texgyreschola-regular.otf');
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "TeX Gyre Schola";
+	src: url('/static/fonts/texgyreschola-bold.otf');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "TeX Gyre Schola";
+	src: url('/static/fonts/texgyreschola-italic.otf');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "TeX Gyre Schola";
+	src: url('/static/fonts/texgyreschola-bolditalic.otf');
+	font-weight: bold;
+	font-style: italic;
+}
+
+.font-tex {
+	font-family: 'TeX Gyre Schola', 'Garamond';
+}
