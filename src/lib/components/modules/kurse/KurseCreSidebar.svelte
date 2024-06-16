@@ -7,8 +7,6 @@
 	const homeActiveClass = "bg-gradient-to-br variant-gradient-tertiary-secondary";
 
 	function checkCurrentPathEndWith(pattern: string): boolean {
-		console.log(pattern, $page?.url.pathname);
-
 		return $page?.url.pathname.endsWith(pattern);
 	}
 

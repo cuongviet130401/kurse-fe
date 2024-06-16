@@ -40,9 +40,7 @@
 <div class="flex">
 
 	<section id="course-description" class="grow w-full">
-		<div id="markdown-content">
-			<BitbleMarkdown md={fetchedData.description} />
-		</div>
+		<BitbleMarkdown md={fetchedData.description} />
 	</section>
 
 	<section id="course-stats">

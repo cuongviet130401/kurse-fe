@@ -36,3 +36,52 @@ div.markdown-content ul {
 div.markdown-content li {
 	margin-bottom: 0.75rem;
 }
+
+div.tree-item-content {
+	width: 100% !important;
+}
+
+div.tocrefdiv {
+	@apply m-2;
+}
+
+a.tocref {
+	@apply text-white;
+}
+
+a.tocref.active {
+	@apply text-primary-500;
+}
+
+div.tocref {
+	padding: 0.25rem;
+	padding-left: 1rem;
+}
+
+div.tocref.active {
+	@apply border-l-tertiary-500 border-l-4;
+}
+
+a.tocref.active {
+	@apply text-tertiary-500 font-bold;
+}
+
+div.tocref-H2 {
+	padding-left: 2rem;
+}
+
+div.tocref-H3 {
+	padding-left: 3rem;
+}
+
+div.tocref-H4 {
+	padding-left: 4rem;
+}
+
+div.tocref:hover {
+	@apply variant-ghost-primary;
+}
+
+div.tocref a:active {
+	@apply text-primary-500;
+}

@@ -69,7 +69,7 @@
 <svelte:window bind:scrollY={y} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="sticky top-0 overflow-x-hidden" on:mouseleave={() => {selectedMenuIndex = activeMenuIndex}}>
+<div class="sticky top-0 overflow-x-hidden" on:mouseleave={() => {selectedMenuIndex = activeMenuIndex}} style="z-index: 900;">
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
