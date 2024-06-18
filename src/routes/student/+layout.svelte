@@ -23,12 +23,9 @@
 
   onMount(() => {
     verifyStudentAccount();
-  })
-
+  });
 </script>
 
+<KurseAppBar />
 
-<KurseAppBar/>
-
-<slot/>
-
+<slot />

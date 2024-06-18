@@ -1,103 +1,55 @@
 <script>
   import { scale } from "svelte/transition";
   import { expoInOut } from "svelte/easing";
-  import Rating from "$lib/components/Rating.svelte"
 
+  export let id;
   export let title;
-  export let image;
-  export let language;
+  export let thumbnailUrl;
+  // export let description;
   export let price;
-  export let description;
-  //export let url; // URL to navigate to
+  // export let subtitle;
+  export let numberOfEnrolled;
+  export let numberOfLiked;
 </script>
 
-<div  class="book">
-  <section
-    class="book"
+<a href="/course-details/{id}">
+  <div
+    class="card m-4 !p-0 card-hover shadow-xl hover:shadow-2xl flex flex-col justify-between"
+    style="height: 400px; width: 300px; max-width: 300px"
     transition:scale={{ duration: 1000, easing: expoInOut }}
   >
-    <section class="book-top">
-        <img src={image} class="bkcont" />
-        <h5>{title}</h5>
+    <header class="card-header !p-0 overflow-y-hidden rounded-t-lg">
+      <div class="image-container">
+        <img src={thumbnailUrl} class="image" alt="" />
+      </div>
+    </header>
+    <section class="p-4 grow">
+      <h4 class="h4">
+        {title}
+      </h4>
+      <p>{numberOfLiked}</p>
+      <p>({numberOfEnrolled})</p>
     </section>
-
-    <section class="book-bottom">
-      <section class="from-pariyatti available-at">
-        <Rating></Rating>
-        <header>
-          <h5>{price}</h5>
-        </header>
-      </section>
-    </section>
-  </section>
-</div>
+    <footer
+      class="card-footer !p-2 flex flex-row gap-4 mt-8"
+      style="border-top-width: 1px; border-top-color: darkgray;"
+    >
+      <h5>{price}</h5>
+    </footer>
+  </div>
+</a>
 
 <style>
-  .book {
-    width: 280px;
-    margin: 15px;
-    ;
-  }
-
-  .book-top {
+  .image-container {
     width: 100%;
-    display: block;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    height: 200px; /* Set the height you want for the images */
+    overflow: hidden;
   }
 
-  /* Book Top Layout */
-  .bkcont {
-    width: 400px; /* Chiều rộng cố định cho ảnh */
-    height: 180px; /* Chiều cao cố định cho ảnh */
-    object-fit: cover; /* Điều chỉnh ảnh để lấp đầy khung mà không bị méo */
-    margin-bottom:15px;
-  }
-
-  div.language {
-    font-size: 0.8em;
-    margin: 5px 0;
-  }
-
-  figcaption {
-    text-align: center;
-    width: 90%;
-    padding: 3px 10px;
-    height: 36px;
-    font-weight: bold;
-    
-  }
-
-  /* Book Bot Layout */
-
-  .book-bottom {
+  .image {
     width: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: left;
+    height: 100%;
+    object-fit: cover; /* This ensures the image covers the entire container */
+    object-position: center; /* This centers the image within the container */
   }
-
-  .available-at {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /*   background-color: #fff; */
-  }
-
-  .available-at header {
-    text-align: left;
-  }
-  .available-at header h5 {
-    font-size: 0.95rem;
-    margin: 15px 0;
-    padding: 0 0.2rem;
-  }
-
-  .from-pariyatti {
-    height: 200px;
-  }
-
-  
 </style>

@@ -2,16 +2,23 @@
   export let searchTerm;
 </script>
 
-<div id="search-input-cont">
+<div
+  class="input-group input-group-divider flex flex-row pl-2 items-center variant-form-material"
+  style="background: none"
+  id="search-input-cont"
+>
   <input
-    type="text"
-    style="color: black"
-    id="search-field"
-    placeholder="Enter Search"
+    class="grow text-xl"
+    type="search"
+    placeholder="Search your topic"
     autocomplete="off"
     bind:value={searchTerm}
     on:input
   />
+  <!-- <a href="/" title="Username already in use.">(icon)</a> -->
+  <span class="text-2xl" style="margin-right: 16px;"
+    ><i class="bi bi-search"></i></span
+  >
 </div>
 
 <style>
@@ -20,14 +27,5 @@
     display: flex;
     align-items: center;
     margin: 0 0 0 10px;
-  }
-
-  #search-field {
-    width: 100%;
-    font-size: 1.3rem;
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 8px;
-    margin: 0 10px 0;
   }
 </style>
