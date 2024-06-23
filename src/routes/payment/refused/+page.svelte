@@ -1,8 +1,13 @@
 <script>
+  import BitbleAppBar from "$lib/components/BitbleAppBar.svelte";
   import refuse from "$lib/images/refuse.gif";
 </script>
 
-<div class="w-full flex items-center justify-center">
+<BitbleAppBar />
+<div
+  class="w-full flex items-center justify-center"
+  style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2% 0; margin-top: 200px;"
+>
   <div class="card variant-ghost-error rounded-lg my-8 py-8 w-1/2 h-fit">
     <!-- Content -->
     <img class="mx-auto w-64 h-64 object-contain" src={refuse} alt="refuse" />

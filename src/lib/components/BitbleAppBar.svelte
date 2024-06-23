@@ -42,7 +42,7 @@
         <li>
           <a
             href="/auth"
-            class="btn bg-gradient-to-br variant-gradient-primary-secondary"
+            class="btn bg-gradient-to-br variant-gradient-primary-secondary text-white"
           >
             Join us
           </a>

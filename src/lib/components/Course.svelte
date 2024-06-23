@@ -27,11 +27,11 @@
       <h4 class="h4">
         {title}
       </h4>
-      <p>{numberOfLiked}</p>
-      <p>({numberOfEnrolled})</p>
+      <p>{numberOfLiked} liked</p>
+      <p>{numberOfEnrolled} enrolled</p>
     </section>
     <footer
-      class="card-footer !p-2 flex flex-row gap-4 mt-8"
+      class="card-footer !p-2 flex flex-row gap-4"
       style="border-top-width: 1px; border-top-color: darkgray;"
     >
       <h5>{price}</h5>
