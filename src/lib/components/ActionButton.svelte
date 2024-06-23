@@ -1,7 +1,7 @@
 <script>
   import { ProgressRadial } from "@skeletonlabs/skeleton";
-  import { quadInOut } from 'svelte/easing';
-  import { slide } from 'svelte/transition';
+  import { quadInOut } from "svelte/easing";
+  import { slide } from "svelte/transition";
 
   export let icon;
   export let label;
@@ -29,14 +29,13 @@
     try {
       onClick()
         .then((result) => {
-
           if (result?.status >= 400) {
             throw { ...result };
           }
 
           isSuccess = true;
-					isLoading = false;
-					onSuccess(result);
+          isLoading = false;
+          onSuccess(result);
         })
         .catch((err) => {
           console.log("INSIDE ASYNC ERROR");
@@ -66,20 +65,22 @@
 </script>
 
 <button
-  type="{ submitBtn ? 'submit' : 'button' }"
+  type={submitBtn ? "submit" : "button"}
   class="btn {styleClasses}"
   on:click={handleClick}
   on:submit={handleClick}
   {...$$props}
   {...$$restProps}
-  disabled="{disabled || isLoading}"
+  disabled={disabled || isLoading}
 >
   {#if isLoading}
-	<div transition:slide={{axis: 'x', easing: quadInOut}}>
-    <ProgressRadial value={undefined} width="w-4" strokeLinecap="round" />
-	</div>
+    <div transition:slide={{ axis: "x", easing: quadInOut }}>
+      <ProgressRadial value={undefined} width="w-4" strokeLinecap="round" />
+    </div>
   {:else if icon}
-    <span transition:slide={{axis: 'x', easing: quadInOut}}><i class="bi {icon}"></i></span>
+    <span transition:slide={{ axis: "x", easing: quadInOut }}
+      ><i class="bi {icon}"></i></span
+    >
   {/if}
   <span>{label}</span>
   {#if isLoading}

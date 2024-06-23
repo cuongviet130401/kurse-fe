@@ -31,7 +31,7 @@
   });
 </script>
 
-<h1>Comments:</h1>
+<h1 class="text-xl">Comments</h1>
 
 <!-- Form to add new comment -->
 <form class="w-full" on:submit|preventDefault={addComment}>

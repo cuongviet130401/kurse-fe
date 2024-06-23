@@ -1,251 +1,360 @@
 <script lang="ts">
-  import BitbleInput from "$lib/components/BitbleInput.svelte";
+  import ActionButton from "$lib/components/ActionButton.svelte";
+
   import { onMount } from "svelte";
-  import { writable } from "svelte/store";
+  import BitbleAppBar from "$lib/components/BitbleAppBar.svelte";
+  import { Avatar } from "@skeletonlabs/skeleton";
+  import {
+    TreeView,
+    TreeViewItem,
+    RecursiveTreeView,
+    type TreeViewNode,
+  } from "@skeletonlabs/skeleton";
+  import { authStore } from "$lib/globalStates/authAccount";
+  import { students } from "$lib/data/students.js";
+  import ActionInput from "$lib/components/ActionInput.svelte";
+  import { getToastStore } from "@skeletonlabs/skeleton";
+  import { preparePayload, triggerErrorToast } from "$lib/utils/CommonUtils";
+  import { page } from "$app/stores";
+  import BitbleDataTable from "$lib/components/shared/BitbleDataTable.svelte";
+  import { _BillStatementDataTableHeaders } from "./+page.js";
+  import LoadingPanel from "$lib/components/shared/LoadingPanel.svelte";
+
+  // let authUser = authStore.get();
+
+  let authUser: any;
+
+  try {
+    authUser = JSON.parse(authStore.get() ?? "{}");
+  } catch (error) {
+    authUser = {};
+    console.error("Error parsing auth user data:", error);
+  }
+
+  let errors: any = {};
 
   let isEditing = false;
 
-  let form_email = "";
-  let form_phoneNumber = "";
+  let returnUrl = $page.url.searchParams.get("return-target");
 
-  let bills = [
-    { id: 1, description: "1", amount: 1 },
-    { id: 2, description: "2", amount: 1 },
-    { id: 3, description: "3", amount: 1 },
-  ];
+  const toastStore = getToastStore();
+
+  let form = {
+    id: 0,
+    avatarUrl: "",
+    firstName: "",
+    lastName: "",
+    gender: "Male",
+    email: "",
+    phoneNumber: "",
+    streetName: "",
+    areaName: "",
+    city: "",
+    country: "",
+  };
 
   //TestLoading
   export let data;
+  let billingFetcher = data.billingFetcher();
   console.log(data);
 
-  function toggleDisabled() {
-    isEditing = !isEditing;
-    updateDisabledState(isEditing);
+  onMount(() => {
+    let student = students[0];
+    form = { ...student };
+    updateDisabledState(true);
+    redirect(); // Initially disable all fields
+  });
+
+  const handleLoginOnSuccess = async (result: any) => {
+    authStore.save(result);
+    redirect();
+  };
+
+  const handleLoginOnError = async (err: any) => {
+    triggerErrorToast(
+      toastStore,
+      "Unauthorized: " + JSON.stringify(err.description)
+    );
+  };
+
+  function saveStudent() {
+    // Update student data
+    students[0] = { ...form };
+    console.log("Student data saved:", students[0]);
+    toggleEditing(); // Disable fields again after saving
   }
 
-  function updateDisabledState(disabled) {
+  function toggleEditing() {
+    isEditing = !isEditing;
+    updateDisabledState(!isEditing);
+  }
+
+  function updateDisabledState(disabled: boolean) {
+    // Khai báo kiểu cho parameter disabled
     const elements = document.querySelectorAll(".disableable");
     elements.forEach((element) => {
-      element.disabled = disabled;
+      (element as HTMLInputElement | HTMLButtonElement).disabled = disabled;
     });
   }
 
-  onMount(() => {
-    updateDisabledState(false);
-    //fetchUsers();
-  });
+  function redirect() {
+    if (!authStore.get()) {
+      return;
+    }
+    window.location.pathname =
+      returnUrl ??
+      `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`;
+  }
 
-  // Khai báo một store để lưu trữ dữ liệu người dùng từ API
-  // const users = writable([]);
-
-  // async function fetchUsers() {
-  //   try {
-  //     const response = await fetch("http://example.com/api/users");
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //     const data = await response.json();
-  //     // Cập nhật giá trị của store với dữ liệu người dùng từ API
-  //     users.set(data);
-  //   } catch (error) {
-  //     console.error("There was a problem fetching the users:", error);
-  //   }
-  // }
-
-  function downloadBill() {
-    // Data for example
-    const data =
-      "ID,Description,Amount\n1,Electricity,100\n2,Internet,50\n3,Water,30";
-
-    // Create URL for download
-    const blob = new Blob([data], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-
-    // Create "a" for Download and Click
-    const a = document.createElement("a");
-    a.style.display = "none";
-    a.href = url;
-    a.download = "bill.csv";
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
+  function downloadBillingInfo() {
+    billingFetcher
+      .then((value) => {
+        const csvContent =
+          _BillStatementDataTableHeaders
+            .map((header) => header.columnTitle)
+            .join(",") +
+          "\n" +
+          value.records
+            .map((row: Record<string, any>) =>
+              _BillStatementDataTableHeaders
+                .map((header) => JSON.stringify(row[header.columnTitle] ?? ""))
+                .join(",")
+            )
+            .join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "billing-info.csv");
+        document.body.appendChild(link); // Required for Firefox
+        link.click();
+      })
+      .catch((error) => {
+        console.error("Error downloading billing info:", error);
+        triggerErrorToast(toastStore, "Error downloading billing info.");
+      });
   }
 </script>
 
-<div class="w-screen h-screen flex justify-between items-center">
-  <div
-    class="flex mt-10 items-start justify-center p-8 rounded-lg shadow-md w-full lg:w-4/5"
-  >
-    <!-- Div bên trái -->
-    <div class="w-1/3 p-4 flex flex-col space-y-4 gap-4">
+<BitbleAppBar />
+<div
+  style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2% 0; margin-top: 100px;"
+>
+  <div class="card p-4 shadow-lg" style="width: 1200px">
+    <header class="card-header">
       <div class="flex">
-        <ol class="breadcrumb">
-          <li class="crumb">
-            <a class="anchor" href="/">Home</a>
-          </li>
-          <li class="crumb-separator" aria-hidden>&rsaquo;</li>
-          <li class="crumb">
-            <a class="anchor" href="/student">Student</a>
-          </li>
-          <li class="crumb-separator" aria-hidden>&rsaquo;</li>
-          <li>Student Information</li>
-        </ol>
-      </div>
-      <div class="billing-statement">
-        <h1 class="text-2xl">Billing Statement</h1>
-        <!-- Bảng hóa đơn -->
-        <table class="table-auto">
-          <!-- Tiêu đề bảng -->
-
-          <thead>
-            <!-- Các cột -->
-            <tr>
-              <th class="px-4 py-2">ID</th>
-              <th class="px-4 py-2">Description</th>
-              <th class="px-4 py-2">Amount</th>
-            </tr>
-          </thead>
-          <!-- Dữ liệu bảng -->
-          <tbody>
-            {#each bills as bill}
-              <tr>
-                <td class="border px-4 py-2">{bill.id}</td>
-                <td class="border px-4 py-2">{bill.description}</td>
-                <td class="border px-4 py-2">{bill.amount}</td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-
-        <!-- Nút download -->
-        <button
-          on:click={downloadBill}
-          class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Download Bill
-        </button>
-      </div>
-    </div>
-
-    <!-- Div bên phải -->
-    <div
-      class="card variant-ghost w-1/2 p-4 flex flex-col space-y-4 gap-4 rounded-xl border"
-    >
-      <!-- {#if users.length > 0}
-       
-        <ul>
-          {#each users as user}
-            <li>{user.name}</li>
-          {/each}
-        </ul>
-      {:else}
-       
-        <p>No users available.</p>
-      {/if} -->
-
-      <div class="flex items-center justify-between">
-        <h1 class="text-2xl">Student Name</h1>
-
-        <!-- Disable & Editing Button -->
-        <button
-          type="button"
-          class="btn-icon variant-ghost"
-          on:click={toggleDisabled}
-        >
-          <i class="bi bi-pencil"></i>
-        </button>
-      </div>
-
-      <!-- ... Các phần tử khác trong thẻ div ... -->
-
-      <!-- First Name -->
-      <label class="flex items-start">
-        <span class="w-1/3">First Name:</span>
-        <input class="w-2/3 input disableable" type="text" placeholder="" />
-      </label>
-
-      <!-- Last Name -->
-      <label class="flex items-start">
-        <span class="w-1/3">Last Name:</span>
-        <input class="w-2/3 input disableable" type="text" placeholder="" />
-      </label>
-
-      <!-- CheckBox Gender -->
-      <div class="flex items-center space-x-4">
-        <span class="w-1/3">Gender:</span>
-        <label class="flex items-center space-x-4">
-          <input
-            class="checkbox disableable"
-            type="radio"
-            name="options"
-            checked
-          />
-          <p>Male</p>
-        </label>
-        <label class="flex items-center space-x-4">
-          <input class="checkbox disableable" type="radio" name="options" />
-          <p>Female</p>
-        </label>
-      </div>
-
-      <!-- Email -->
-      <div class="flex item_center">
-        <BitbleInput
-          type="email"
-          fieldName="email"
-          bind:value={form_email}
-          placeholder=""
-          required={true}
+        <Avatar
+          class="mb-4"
+          src={students[0]?.avatarUrl ?? ""}
+          width="w-32"
+          rounded="rounded-full"
         />
+
+        <!-- <h2 class="h2 ml-4">{authUser?.account.username}</h2> -->
+
+        <h2 class="h2 ml-4">
+          {authUser?.account?.studentname ?? "Student Name"}
+        </h2>
       </div>
+    </header>
+    <section class="p-4">
+      <h3 class="h3">About</h3>
 
-      <!-- Phone Number -->
-      <label class="label flex items-start">
-        <span class="w-1/3">Phone Number:</span>
-        <div class="w-2/3 input-group grid grid-cols-[auto_2fr_auto]">
-          <input
-            class="input disableable"
-            id="txt_phoneNumber"
-            type="tel"
-            name="phonenumber"
-            placeholder=""
-            bind:value={form_phoneNumber}
-            required
-          />
-        </div>
-      </label>
+      <TreeView>
+        <TreeViewItem>
+          <h4 class="h4">Student Information</h4>
+          <svelte:fragment slot="children">
+            <TreeViewItem>
+              <div class="grid grid-cols-2 gap-2" style="width: 1000px">
+                <label class="label mb-4">
+                  <span>First Name</span>
+                  <input
+                    class="input disableable"
+                    type="text"
+                    placeholder="Nguyen"
+                    bind:value={form.firstName}
+                  />
+                </label>
 
-      <!-- Street Name -->
-      <label class="flex items-start">
-        <span class="w-1/3">Street Name:</span>
-        <input class="w-2/3 input disableable" type="text" placeholder="" />
-      </label>
+                <label class="label mb-4">
+                  <span>Area Name</span>
+                  <input
+                    class="input disableable"
+                    type="text"
+                    placeholder="Input"
+                    bind:value={form.areaName}
+                  />
+                </label>
 
-      <!-- Area Name -->
-      <label class="flex items-start">
-        <span class="w-1/3">Area Name:</span>
-        <input class="w-2/3 input disableable" type="text" placeholder="" />
-      </label>
+                <label class="label mb-4">
+                  <span>Last Name</span>
+                  <input
+                    class="input disableable"
+                    type="text"
+                    placeholder="Van A"
+                    bind:value={form.lastName}
+                  />
+                </label>
 
-      <!-- City/District -->
-      <label class="flex items-start">
-        <span class="w-1/3">City/District:</span>
-        <input class="w-2/3 input disableable" type="text" placeholder="" />
-      </label>
+                <label class="label mb-4">
+                  <span>Street Name</span>
+                  <input
+                    class="input disableable"
+                    type="text"
+                    placeholder="Input"
+                    bind:value={form.streetName}
+                  />
+                </label>
 
-      <!-- Country -->
-      <label class="flex items-start">
-        <span class="w-1/3">Country:</span>
-        <input class="w-2/3 input disableable" type="text" placeholder="" />
-      </label>
+                <div class="space-y-2 mb-4">
+                  <span>Gender</span>
+                  <label class="flex items-center space-x-2">
+                    <input
+                      class="radio disableable"
+                      type="radio"
+                      checked
+                      name="radio-direct"
+                      bind:group={form.gender}
+                      value="Male"
+                    />
+                    <p>Male</p>
+                  </label>
+                  <label class="flex items-center space-x-2">
+                    <input
+                      class="radio disableable"
+                      type="radio"
+                      name="radio-direct"
+                      bind:group={form.gender}
+                      value="Female"
+                    />
+                    <p>Female</p>
+                  </label>
+                </div>
 
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="btn variant-filled"
-        class:hidden={isEditing}
-        on:click={toggleDisabled}>Done</button
-      >
-    </div>
+                <label class="label mb-4">
+                  <span>City/District</span>
+                  <input
+                    class="input disableable"
+                    type="text"
+                    placeholder="Input"
+                    bind:value={form.city}
+                  />
+                </label>
+
+                <ActionInput
+                  name="email"
+                  bind:value={form.email}
+                  {errors}
+                  label="Email"
+                  class="disableable"
+                  icon="bi-envelope-paper-fill"
+                  placeholder="Adam.Smith@gmail.com"
+                  required={true}
+                />
+                <!-- <label class="label mb-4">
+                  <span>Email</span>
+                  <input
+                    class="input"
+                    type="email"
+                    placeholder="nguyenvana@gmail.com"
+                    bind:value={form.email}
+                  />
+                </label> -->
+
+                <label class="label mb-4">
+                  <span>Country</span>
+                  <input
+                    class="input disableable"
+                    type="text"
+                    placeholder="Input"
+                    bind:value={form.country}
+                  />
+                </label>
+
+                <ActionInput
+                  name="phoneNumber"
+                  bind:value={form.phoneNumber}
+                  {errors}
+                  label="Phone number"
+                  class="disableable"
+                  icon="bi-telephone-fill"
+                  placeholder="098-765-4321"
+                  required={true}
+                />
+
+                <!-- <label class="label mb-4">
+                  <span>Phone Number</span>
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Input"
+                    bind:value={form.phoneNumber}
+                  />
+                </label> -->
+
+                <div class="grid grid-cols-2 gap-4 place-items-end">
+                  <div>
+                    <!-- <button
+                      type="button"
+                      style="width: 200px"
+                      class="btn disableable bg-gradient-to-br variant-gradient-primary-secondary text-white"
+                      on:click={saveStudent}>Save</button
+                    > -->
+                    <ActionButton
+                      icon="bi bi-save"
+                      label="Save"
+                      style="width: 200px"
+                      class="btn disableable bg-gradient-to-br variant-gradient-primary-secondary text-white"
+                      onclick={saveStudent}
+                      onSuccess={handleLoginOnSuccess}
+                      onError={handleLoginOnError}
+                    />
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      style="width: 200px"
+                      class="btn bi bi-pencil-square bg-white text-black gap-2"
+                      on:click={toggleEditing}
+                    >
+                      Edit</button
+                    >
+                  </div>
+                </div>
+              </div>
+            </TreeViewItem>
+          </svelte:fragment>
+        </TreeViewItem>
+        <TreeViewItem
+          ><h4 class="h4">Billing Statement</h4>
+          <svelte:fragment slot="children">
+            <TreeViewItem>
+              {#await billingFetcher}
+                <LoadingPanel />
+              {:then value}
+                <BitbleDataTable
+                  paginatedResponse={value}
+                  tableHeaders={_BillStatementDataTableHeaders}
+                  interactable
+                />
+                <ActionButton
+                  icon="bi bi-download"
+                  label="Download Bill"
+                  style="width: 400px"
+                  class="btn bg-gradient-to-br variant-gradient-primary-secondary text-white mt-4"
+                  onclick={downloadBillingInfo}
+                />
+              {/await}
+            </TreeViewItem>
+          </svelte:fragment>
+        </TreeViewItem>
+        <TreeViewItem
+          ><h4 class="h4">Payment Method</h4>
+          <svelte:fragment slot="children">
+            <TreeViewItem>Child</TreeViewItem>
+          </svelte:fragment>
+        </TreeViewItem>
+      </TreeView>
+    </section>
+    <footer class="card-footer"></footer>
   </div>
 </div>

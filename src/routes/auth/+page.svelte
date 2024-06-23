@@ -1,15 +1,15 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
-	import ActionButton from "$lib/components/ActionButton.svelte";
+  import { page } from "$app/stores";
+  import ActionButton from "$lib/components/ActionButton.svelte";
   import ActionInput from "$lib/components/ActionInput.svelte";
   import { authStore } from "$lib/globalStates/authAccount";
-	import { preparePayload, triggerErrorToast } from "$lib/utils/CommonUtils";
-	import { provokePost } from "$lib/utils/ServiceApiConnector";
-	import { getToastStore } from "@skeletonlabs/skeleton";
-	import { onMount } from "svelte";
-	import { sineInOut } from "svelte/easing";
-	import { blur } from "svelte/transition";
+  import { preparePayload, triggerErrorToast } from "$lib/utils/CommonUtils";
+  import { provokePost } from "$lib/utils/ServiceApiConnector";
+  import { getToastStore } from "@skeletonlabs/skeleton";
+  import { onMount } from "svelte";
+  import { sineInOut } from "svelte/easing";
+  import { blur } from "svelte/transition";
 
   const toastStore = getToastStore();
 
@@ -19,29 +19,36 @@
   let form_loginIdentity: string;
   let form_password: string;
 
-  const handleLogin = async () => await provokePost("v1/accounts/login", preparePayload(
-    { form_loginIdentity, form_password }
-  ));
+  const handleLogin = async () =>
+    await provokePost(
+      "v1/accounts/login",
+      preparePayload({ form_loginIdentity, form_password })
+    );
 
   const handleLoginOnSuccess = async (result: any) => {
     authStore.save(result);
     redirect();
-  }
+  };
 
   const handleLoginOnError = async (err: any) => {
-    triggerErrorToast(toastStore, "Unauthorized: " + JSON.stringify(err.description))
-  }
+    triggerErrorToast(
+      toastStore,
+      "Unauthorized: " + JSON.stringify(err.description)
+    );
+  };
 
   function redirect() {
     if (!authStore.get()) {
       return;
     }
-    window.location.pathname = returnUrl ?? `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`;
+    window.location.pathname =
+      returnUrl ??
+      `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`;
   }
 
   onMount(() => {
     redirect();
-  })
+  });
 </script>
 
 <div class="w-screen h-screen flex justify-center items-center">

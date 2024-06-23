@@ -6,19 +6,58 @@
   import { RecursiveTreeView } from "@skeletonlabs/skeleton";
   import { onMount } from "svelte";
   import CommentSection from "$lib/components/CommentSection.svelte";
+  import ActionButton from "$lib/components/ActionButton.svelte";
+  import { authStore } from "$lib/globalStates/authAccount";
+  import { getToastStore } from "@skeletonlabs/skeleton";
+  import { preparePayload, triggerErrorToast } from "$lib/utils/CommonUtils";
+  import { provokePost } from "$lib/utils/ServiceApiConnector";
 
   export let course = testData;
 
+  const toastStore = getToastStore();
+
   export let data;
+
+  let form_loginIdentity: string;
+  let form_password: string;
+  let returnUrl = $page.url.searchParams.get("return-target");
 
   $: openedUnit = $page.url.searchParams.get("open");
   $: moduleTreeClass = !!openedUnit ? "w-full" : "w-full";
 
   onMount(() => {
     console.log(course);
+    redirect();
   });
 
   console.log(data);
+
+  const handleLogin = async () =>
+    await provokePost(
+      "v1/accounts/login",
+      preparePayload({ form_loginIdentity, form_password })
+    );
+
+  const handleLoginOnSuccess = async (result: any) => {
+    authStore.save(result);
+    redirect();
+  };
+
+  const handleLoginOnError = async (err: any) => {
+    triggerErrorToast(
+      toastStore,
+      "Unauthorized: " + JSON.stringify(err.description)
+    );
+  };
+
+  function redirect() {
+    if (!authStore.get()) {
+      return;
+    }
+    window.location.pathname =
+      returnUrl ??
+      `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`;
+  }
 </script>
 
 <BitbleAppBar />
@@ -58,14 +97,24 @@
             </div>
             <div class="w-full md:w-1/3 mt-8 md:mt-0">
               <div class="p-6 shadow-lg rounded-lg">
-                <h3 class="text-2xl font-bold mb-4">₫{course.price}</h3>
+                <h3 class="text-2xl font-bold mb-4">{course.price}</h3>
 
-                <a
+                <!-- <a
                   href="/payment"
                   class=" bg-blue-500 text-white py-2 px-4 rounded-lg w-full mt-2 btn bg-gradient-to-br variant-gradient-primary-secondary"
                 >
                   Buy Now
-                </a>
+                </a> -->
+
+                <ActionButton
+                  icon="bi bi-bag"
+                  label="Buy Now"
+                  style="width: 400px"
+                  class="btn disableable bg-gradient-to-br variant-gradient-primary-secondary text-white"
+                  onclick={handleLogin}
+                  onSuccess={handleLoginOnSuccess}
+                  onError={handleLoginOnError}
+                />
 
                 <!-- <ul class="list-disc pl-6 text-white mt-4">
                 {#each course.features as feature}
