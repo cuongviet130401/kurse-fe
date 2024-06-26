@@ -5,7 +5,7 @@
 
   export let icon;
   export let label;
-  export let successIcon = "bi-check-circle-fill";
+  export const successIcon = "bi-check-circle-fill";
   export let disabled = false;
   export let styleClasses = "variant-filled";
   export let submitBtn = false;

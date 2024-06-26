@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss'
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import { skeleton } from '@skeletonlabs/tw-plugin'
-import daisyui from 'daisyui'
+
 
 export default {
 	important: true,
@@ -18,6 +18,7 @@ export default {
 		extend: {},
 	},
 	plugins: [
+		
 		// daisyui,
 		skeleton({
 			themes: { preset: [

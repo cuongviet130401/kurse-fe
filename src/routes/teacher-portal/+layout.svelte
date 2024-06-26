@@ -1,5 +1,5 @@
 <script>
-	import KurseAppBar from './../../lib/components/modules/kurse/KurseAppBar.svelte';
+  import KurseAppBar from "../../lib/components/modules/kurse/KurseAppBar.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { authStore } from "$lib/globalStates/authAccount";
@@ -7,8 +7,7 @@
   import { getToastStore } from "@skeletonlabs/skeleton";
   import { onMount } from "svelte";
 
-
-	const toastStore = getToastStore();
+  const toastStore = getToastStore();
   let url = $page.url.pathname;
 
   function verifyStudentAccount() {
@@ -22,10 +21,9 @@
 
   onMount(() => {
     verifyStudentAccount();
-  })
-
+  });
 </script>
 
-<KurseAppBar/>
+<KurseAppBar />
 
-<slot/>
+<slot />
