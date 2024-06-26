@@ -7,7 +7,11 @@
   import Result from "postcss/lib/result";
   import { goto } from "$app/navigation";
   import ActionInput from "$lib/components/ActionInput.svelte";
-  import { preparePayload, triggerErrorToast, triggerSuccessToast } from "$lib/utils/CommonUtils";
+  import {
+    preparePayload,
+    triggerErrorToast,
+    triggerSuccessToast,
+  } from "$lib/utils/CommonUtils";
 
   const toastStore = getToastStore();
 
@@ -23,31 +27,40 @@
 
   async function handleCreateAccount() {
     const preparedPayload = preparePayload({
-      form_firstName, form_lastName, form_email, form_phoneNumber, form_password
-    })
+      form_firstName,
+      form_lastName,
+      form_email,
+      form_phoneNumber,
+      form_password,
+    });
 
     return await provokePost("v1/accounts/signup", preparedPayload);
   }
 
   function handleError(err: any) {
-
     if (err.httpStatus === 404) {
-      triggerErrorToast(toastStore, err.message + " : " + JSON.stringify(err.description))
+      triggerErrorToast(
+        toastStore,
+        err.message + " : " + JSON.stringify(err.description)
+      );
       return;
     }
 
     if (err.httpStatus === 400) {
       Object.keys(err.description).forEach((fieldName) => {
-        console.log(fieldName)
-        errors[fieldName] = err.description[fieldName]
+        console.log(fieldName);
+        errors[fieldName] = err.description[fieldName];
       });
     }
   }
 
   function onSuccess(result: any) {
-    console.log("triggered onSuccess()")
+    console.log("triggered onSuccess()");
     if (result) {
-      triggerSuccessToast(toastStore, '🎉 You account has been initialized successfully.')
+      triggerSuccessToast(
+        toastStore,
+        "🎉 You account has been initialized successfully."
+      );
       goto("/auth");
     }
   }
@@ -90,7 +103,6 @@
           inputClass={""}
         />
       </div>
-
 
       <ActionInput
         name="email"

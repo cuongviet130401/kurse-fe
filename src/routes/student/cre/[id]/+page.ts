@@ -1,4 +1,5 @@
 import { mockFetching } from '$lib/utils/CommonUtils.js';
+import { provokeGet } from '$lib/utils/ServiceApiConnector.js';
 
 const mockData = {
 	id: 1,
@@ -39,5 +40,6 @@ export function load({ params }) {
 }
 
 export async function _fetchCourseData(id: any) {
-	return mockFetching(mockData);
+	// return mockFetching(mockData);
+	return await provokeGet()
 }

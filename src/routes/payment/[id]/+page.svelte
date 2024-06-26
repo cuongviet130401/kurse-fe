@@ -8,8 +8,17 @@
   import { preparePayload, triggerErrorToast } from "$lib/utils/CommonUtils";
   import { provokePost } from "$lib/utils/ServiceApiConnector";
   import QRCODE from "$lib/images/QR_CODE_EX.svg";
+  import { onMount } from "svelte";
+  import { page } from "$app/stores";
+  import { goto } from "$app/navigation";
+  import { loadStripe } from "@stripe/stripe-js";
+  import { PUBLIC_STRIPE_KEY } from "$env/static/public";
+  import { Elements } from "svelte-stripe";
 
   let tabSet: number = 0;
+  let stripe = null;
+  let card;
+  let clientSecret;
 
   const toastStore = getToastStore();
 
@@ -34,6 +43,43 @@
       "Unauthorized: " + JSON.stringify(err.description)
     );
   };
+
+  onMount(async () => {
+    stripe = await loadStripe(PUBLIC_STRIPE_KEY);
+    const elements = stripe.elements();
+    card = elements.create("card");
+    // card.mount("#card-element");
+  });
+
+  async function handlePayment() {
+    const response = await fetch("/api/payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: [{ id: "01" }],
+      }),
+    });
+
+    const { clientSecret: newClientSecret } = await response.json();
+    clientSecret = newClientSecret;
+
+    const { error, paymentIntent } = await stripe.confirmCardPayment(
+      clientSecret,
+      {
+        payment_method: {
+          card,
+        },
+      }
+    );
+
+    if (error) {
+      console.error(error);
+    } else if (paymentIntent.status === "succeeded") {
+      goto("/successful");
+    }
+  }
 </script>
 
 <BitbleAppBar />
@@ -85,21 +131,27 @@
                 label="Purchase Now"
                 style="width: 540px"
                 class="btn disableable bg-gradient-to-br variant-gradient-primary-secondary text-white"
-                onclick={handleLogin}
+                onclick={(handlePayment, handleLogin)}
                 onSuccess={handleLoginOnSuccess}
                 onError={handleLoginOnError}
               />
             {:else if tabSet === 1}
               <div class="w-full grid grid-cols-1" style="height: 500px">
-                <div>01</div>
-                <div>02</div>
+                <!-- <div> 
+                  <form on:submit|preventDefault="{submit}">
+                  <Elements {stripe} {clientSecret} bind:elements>
+                    <PaymentElement/>
+                  </Elements>
+                  <button>Pay</button>
+                </form> -->
+                <!-- </div>   -->
               </div>
               <ActionButton
                 icon="bi bi-credit-card"
                 label="Purchase Now"
                 style="width: 550px"
                 class="btn disableable bg-gradient-to-br variant-gradient-primary-secondary text-white"
-                onclick={handleLogin}
+                onclick={(handlePayment, handleLogin)}
                 onSuccess={handleLoginOnSuccess}
                 onError={handleLoginOnError}
               />

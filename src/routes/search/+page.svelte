@@ -9,7 +9,7 @@
   let filteredBooks = bookData;
   let searchTerm = "";
   let paginationSettings: PaginationSettings = {
-    page: 0,
+    page: 1,
     limit: 6,
     size: filteredBooks.length,
     amounts: [6, 12], // Example amounts for select input
@@ -32,7 +32,7 @@
     return filteredBooks.slice(startIndex, endIndex);
   };
 
-  // Event handler for page change
+  //Event handler for page change
   function onPageChange(e: CustomEvent) {
     paginationSettings.page = e.detail.page;
   }

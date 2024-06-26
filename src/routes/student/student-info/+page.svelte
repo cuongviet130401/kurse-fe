@@ -347,12 +347,6 @@
             </TreeViewItem>
           </svelte:fragment>
         </TreeViewItem>
-        <TreeViewItem
-          ><h4 class="h4">Payment Method</h4>
-          <svelte:fragment slot="children">
-            <TreeViewItem>Child</TreeViewItem>
-          </svelte:fragment>
-        </TreeViewItem>
       </TreeView>
     </section>
     <footer class="card-footer"></footer>
