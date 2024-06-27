@@ -11,7 +11,6 @@
     type TreeViewNode,
   } from "@skeletonlabs/skeleton";
   import { authStore } from "$lib/globalStates/authAccount";
-  import { students } from "$lib/data/students.js";
   import ActionInput from "$lib/components/ActionInput.svelte";
   import { getToastStore } from "@skeletonlabs/skeleton";
   import { preparePayload, triggerErrorToast } from "$lib/utils/CommonUtils";
@@ -62,12 +61,10 @@
     let student = students[0];
     form = { ...student };
     updateDisabledState(true);
-    redirect(); // Initially disable all fields
   });
 
   const handleLoginOnSuccess = async (result: any) => {
     authStore.save(result);
-    redirect();
   };
 
   const handleLoginOnError = async (err: any) => {
@@ -95,15 +92,6 @@
     elements.forEach((element) => {
       (element as HTMLInputElement | HTMLButtonElement).disabled = disabled;
     });
-  }
-
-  function redirect() {
-    if (!authStore.get()) {
-      return;
-    }
-    window.location.pathname =
-      returnUrl ??
-      `/${authStore.get().account.role === "STUDENT_ACCOUNT" ? "student" : "teacher"}/`;
   }
 
   function downloadBillingInfo() {

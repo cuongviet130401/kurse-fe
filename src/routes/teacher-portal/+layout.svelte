@@ -10,7 +10,7 @@
   const toastStore = getToastStore();
   let url = $page.url.pathname;
 
-  function verifyStudentAccount() {
+  function verifyTeacherAccount() {
     if (authStore.get().account?.role === "TEACHER_ACCOUNT") {
       return;
     }
@@ -20,7 +20,7 @@
   }
 
   onMount(() => {
-    verifyStudentAccount();
+    verifyTeacherAccount();
   });
 </script>
 

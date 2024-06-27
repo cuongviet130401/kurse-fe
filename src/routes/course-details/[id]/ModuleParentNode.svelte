@@ -3,7 +3,7 @@
 
   export let text: string;
   export let backgroundUrl: string;
-  export let icon;
+  let icon: any;
 
   let headingImgStyle = `background-image: url(${backgroundUrl});`;
 </script>
